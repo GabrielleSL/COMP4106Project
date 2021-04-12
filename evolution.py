@@ -14,7 +14,8 @@ class Evolution():
         self.world = World(width,height)
 
     def fitness(self,organ, locationx, locationy):
-        return None
+        sum_of_attributes = organ.endurance + organ.strength + organ.perception + organ.agility + organ.intelligence
+        return sum_of_attributes
 
     def intialize_population (self):
         for i in range(self.width):
