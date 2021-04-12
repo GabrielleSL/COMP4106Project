@@ -3,6 +3,7 @@ import numpy as np
 import random
 import os
 from datetime import datetime
+from organ import Organism
 random.seed(datetime.now())
 
 class Tiles():
@@ -19,10 +20,10 @@ class World():
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.data = [[Tiles() for y in range(height)] for x in range(width)]
+        self.data = [[[Tiles(), ' '] for y in range(height)] for x in range(width)]
     
-    def set(self, x, y, value):
-        self.data[y][x] = value
+    def set(self, x, y, z, value):
+        self.data[y][x][z] = value
     
     def get(self, x, y):
         return self.data[y][x]
@@ -55,7 +56,7 @@ def write_world(world, world_map):
     # for each node in the explored list, write to the file
     for i in range(world.width):
         for j in range(world.height):
-            f.write(f"{str(world.get(i,j).food)}, ")
+            f.write(f"{str(world.get(i,j))}")
         f.write("\n")
 
     # END FOR
