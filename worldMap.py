@@ -3,7 +3,7 @@ import numpy as np
 import random
 import os
 from datetime import datetime
-from organ import Organism
+
 random.seed(datetime.now())
 
 class Tiles():
@@ -13,6 +13,7 @@ class Tiles():
         self.sight= random.randint(0,4)
         self.danger= random.randint(0,4)
         self.getFood= random.randint(0,4)
+        self.difficulty= random.randint(0,4)
         self.stringRep = ' ' 
 
 

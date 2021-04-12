@@ -48,38 +48,38 @@ class Organism:
     Description:
         Used to determine if an organism successfully crosses a tile alive and how much food it gets by doing so
     """
-    def turn(self, tileStats, foodCount):
+    def turn(self, tileStats, locx, locy):
         # this is the amount of food yielded from the tile this turn
         yield_ammount = 0
         # this determines if an organism can enter the tile
         entry = False
 
         # checks if we can enter the tile this turn
-        if self.endurance + self.inertia >= tileStats[0]:
+        if self.endurance + self.inertia >= tileStats.cross:
             # add any extra movement for the organism
             self.inertia += self.endurance - self.inertia
             # report that the organism has entered the tile
             entry = True
         else:  # otherwise we build inertia
-            self.inertia += tileStats[0]
+            self.inertia += tileStats.cross
             # report nothing has changed this turn
-            return None
+            return None, None
         # END IF
 
         # checks our chance of death this turn
-        death = self.chanceOfDeath(self.agility, tileStats[3])
+        death = self.chanceOfDeath(self.agility, tileStats.danger)
         if death > random.uniform(0, 100):
             self.status = False  # flags the organism is now dead
             # report no food was collected this turn
-            return 0
+            return False, False 
         else:
             death = False
             # this means that the tile has food on it
-            if foodCount != 0:
+            if tileStats.Food != 0:
                 # this checks if the organism is strong enough to collect from this tile
-                if self.strength >= tileStats[1]:
+                if self.strength >= tileStats.getFood:
                     # finds the amount of food collected as a product of intelligence and tiles complexity
-                    yield_ammount = self.foodYield(foodCount, self.intelligence, tileStats[4], 2)
+                    yield_ammount = self.foodYield(tileStats.Food, self.intelligence, tileStats.difficulty, 2)
                 # END IF
             # END IF
         # END IF
