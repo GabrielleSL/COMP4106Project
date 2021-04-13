@@ -24,8 +24,9 @@ def day():
             temp_pop.append([org[0],newloc[0],locy[1]])
             country.world.set(locx, locy, 1, ' ')
     
-    country.population = temp_pop
-    
+    new_population= country.populate(country.genetics(temp_pop))
+    country.population=new_population
+  
 
 
 

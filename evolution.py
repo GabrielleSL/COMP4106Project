@@ -1,5 +1,7 @@
 from worldMap import World 
 from organ import Organism
+
+import numpy as np
 import random
 import os
 from datetime import datetime
@@ -26,16 +28,22 @@ class Evolution():
             population.append([organ,locx,locy])
     
     def populate(self, population):
+        newp=[]
         for org in population:
             locx = random.randint(0,self.width-1)
             locy = random.randint(0,self.height-1)
-            self.world.set(locx,locy,1,[org[0],fitness(org[0])])
+            newp.append([org,locx,locy])
+            self.world.set(locx,locy,1,org)
+        
+        return newp
 
+    def sort_population_fitness(self, population):
+        temp=[]
+        for org in population:
+            np.append(org[0], fitness(org[0]))
+        temp=np
 
-  
-    def genetics(self, population):
-
-        return None
+        return temp[temp[:,1].argsort()]
 
     def mutations(self, organ):
         choice= random.randint(0,4)
@@ -49,6 +57,25 @@ class Evolution():
             organ.agility=random.randint(0,4)
         elif choice == 4:
             organ.intelligence=random.randint(0,4)
+
+    def genetics(self, population):
+        sortedp = sort_population_fitness(population)
+        newp = []
+        for i in range(sortedp-1):
+            choice = random.randint(0,1)
+            if choice==0:
+                combine = Organism(sortedp[0][i].endurance,sortedp[0][i].strength,
+                                    sortedp[0][i].perception,sortedp[0][i+1].agility,
+                                    sortedp[0][i+1].intelligence)
+            else:
+                combine = Organism(sortedp[0][i+1].endurance,sortedp[0][i+1].strength,
+                                    sortedp[0][i+1].perception,sortedp[0][i].agility,
+                                    sortedp[0][i].intelligence)
+            newp.append(mutations(combine))
+        
+        return newp
+
+    
 
     
 
