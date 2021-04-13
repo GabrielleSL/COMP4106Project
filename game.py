@@ -28,3 +28,4 @@ def day():
 
     new_population = country.populate(country.genetics(temp_pop))
     country.population = new_population
+

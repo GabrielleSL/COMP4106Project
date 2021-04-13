@@ -9,7 +9,7 @@ from datetime import datetime
 random.seed(datetime.now())
 
 
-class Evolution():
+class Evolution:
 
     def __init__(self, width, height):
         self.width = width
@@ -44,28 +44,31 @@ class Evolution():
         temp = []
         for org in population:
             # ???
-            np.append(org[0], fitness(org[0]))
+            np.append(org[0], self.fitness(org[0]))
         temp = np
 
         return temp[temp[:, 1].argsort()]
 
     def mutations(self, organ):
-        choice = random.randint(0, 4)
-        if choice == 0:
-            organ.endurance = random.randint(0, 4)
-        elif choice == 1:
-            organ.strength = random.randint(0, 4)
-        elif choice == 2:
-            organ.perception = random.randint(0, 4)
-        elif choice == 3:
-            organ.agility = random.randint(0, 4)
-        elif choice == 4:
-            organ.intelligence = random.randint(0, 4)
+        chance_of_mutation = random.randint(0, 100)
+        # 5% chance of mutating
+        if chance_of_mutation <= 5:
+            choice = random.randint(0, 4)
+            if choice == 0:
+                organ.endurance = random.randint(0, 4)
+            elif choice == 1:
+                organ.strength = random.randint(0, 4)
+            elif choice == 2:
+                organ.perception = random.randint(0, 4)
+            elif choice == 3:
+                organ.agility = random.randint(0, 4)
+            elif choice == 4:
+                organ.intelligence = random.randint(0, 4)
 
     def genetics(self, population):
         sortedp = self.sort_population_fitness(population)
         newp = []
-        for i in range(sortedp - 1):
+        for i in range(0, sortedp - 1, 2):
             choice = random.randint(0, 1)
             if choice == 0:
                 combine = Organism(sortedp[0][i].endurance, sortedp[0][i].strength,
