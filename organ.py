@@ -70,7 +70,7 @@ class Organism:
         else:  # otherwise we build inertia
             self.inertia += tileStats.cross
             # report nothing has changed this turn
-            return None, None
+            return [None, None]
         # END IF
 
         # checks our chance of death this turn
@@ -81,25 +81,27 @@ class Organism:
         else:
             death = False
             # this means that the tile has food on it
-            if tileStats.Food != 0:
-                # this checks if the organism is strong enough to collect from this tile
-                if self.strength >= tileStats.getFood:
-                    # finds the amount of food collected as a product of intelligence and tiles complexity
-                    yield_ammount = self.foodYield(tileStats.Food, self.intelligence, tileStats.difficulty, 2)
+            # if tileStats.food != 0:
+            #     # this checks if the organism is strong enough to collect from this tile
+            #     if self.strength >= tileStats.getFood:
+            #         # finds the amount of food collected as a product of intelligence and tiles complexity
+            #         yield_ammount = self.foodYield(tileStats.food, self.intelligence, tileStats.difficulty, 2)
                 # END IF
             # END IF
 
             choice = random.randint(0, 1)
             if choice == 1:
                 if random.randint(0, 1) == 0:
-                    return locx + 1, locy + 1
+                    return [locx + 1, locy + 1]
                 else:
-                    return locx - 1, locy + 1
+                    return [locx - 1, locy + 1]
             else:
                 if random.randint(0, 1) == 0:
-                    return locx - 1, locy - 1
+                    return [locx - 1, locy - 1]
                 else:
-                    return locx + 1, locy - 1
+                    return [locx + 1, locy - 1]
+            
+        return [None, None]
 
                     # END IF
 

@@ -17,7 +17,7 @@ class Evolution:
         self.population = []
         self.world = World(width, height)
 
-    def fitness(self, organ, locationx, locationy):
+    def fitness(self, organ):
         sum_of_attributes = organ.endurance + organ.strength + organ.perception + organ.agility + organ.intelligence
         return sum_of_attributes
 
@@ -44,10 +44,10 @@ class Evolution:
         temp = []
         for org in population:
             # ???
-            np.append(org[0], self.fitness(org[0]))
-        temp = np
+            temp.append([org[0], self.fitness(org[0])])
+        temp2 = np.array(temp)
 
-        return temp[temp[:, 1].argsort()]
+        return temp2[temp2[:, 1].argsort()]
 
     def mutations(self, organ):
         chance_of_mutation = random.randint(0, 100)
@@ -68,16 +68,19 @@ class Evolution:
     def genetics(self, population):
         sortedp = self.sort_population_fitness(population)
         newp = []
-        for i in range(0, sortedp - 1, 2):
+        print(len(sortedp))
+        for i in range(len(sortedp) - 1):
             choice = random.randint(0, 1)
             if choice == 0:
-                combine = Organism(sortedp[0][i].endurance, sortedp[0][i].strength,
-                                   sortedp[0][i].perception, sortedp[0][i + 1].agility,
-                                   sortedp[0][i + 1].intelligence)
+                combine = Organism(sortedp[i][0].endurance, sortedp[i][0].strength,
+                                   sortedp[i][0].perception, sortedp[i+1][0].agility,
+                                   sortedp[i+1][0].intelligence)
+                print(combine)
+                newp.append(self.mutations(combine))
             else:
-                combine = Organism(sortedp[0][i + 1].endurance, sortedp[0][i + 1].strength,
-                                   sortedp[0][i + 1].perception, sortedp[0][i].agility,
-                                   sortedp[0][i].intelligence)
-            newp.append(self.mutations(combine))
+                combine = Organism(sortedp[i+1][0].endurance, sortedp[i+1][0].strength,
+                                   sortedp[i+1][0].perception, sortedp[i][0].agility,
+                                   sortedp[i][0].intelligence)
+                newp.append(self.mutations(combine))
 
         return newp
