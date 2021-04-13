@@ -1,5 +1,7 @@
 import math
 import random
+from datetime import datetime
+random.seed(datetime.now())
 
 """
 Name:
@@ -70,8 +72,7 @@ class Organism:
         death = self.chanceOfDeath(self.agility, tileStats.danger)
         if death > random.uniform(0, 100):
             self.status = False  # flags the organism is now dead
-            # report no food was collected this turn
-            return False, False 
+            # report no food was collected this turn 
         else:
             death = False
             # this means that the tile has food on it
@@ -82,6 +83,19 @@ class Organism:
                     yield_ammount = self.foodYield(tileStats.Food, self.intelligence, tileStats.difficulty, 2)
                 # END IF
             # END IF
+        
+            choice = random.randint(0,1)
+            if choice==1:
+                if random.randint(0,1)==0:
+                    return locx+1, locy+1 
+                else:
+                    return locx-1, locy+1     
+            else:
+                if random.randint(0,1)==0:
+                    return locx-1, locy-1 
+                else:
+                    return locx+1, locy-1 
+
         # END IF
     # END turn
 
