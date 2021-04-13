@@ -8,9 +8,9 @@ country = Evolution(100,100)
 country.intialize_population
 
 def day():  
-    
     for i in range(12):
-       for org in country.population:
+        temp_pop =[]
+        for org in country.population:
             locx = org[1]
             locy = org[2]
             newloc = org[0].turn(country.world.get(locx, locy)[0])
@@ -22,7 +22,10 @@ def day():
                 continue
 
             country.world.set(newloc[0], newloc[1], 1, org[0])
+            temp_pop.append([org,newloc[0],locy[1]])
             country.world.set(locx, locy, 1, ' ')
+
+    country.population = temp_pop
             
 
         
