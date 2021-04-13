@@ -32,6 +32,7 @@ class Organism:
         self.perception = perception
         self.agility = agility
         self.intelligence = intelligence
+        self.food = 0
         self.inertia = 0  # this is the amount of movement built up over time
         self.status = True  # flags the organism as alive
 
@@ -81,12 +82,13 @@ class Organism:
         else:
             death = False
             # this means that the tile has food on it
-            # if tileStats.food != 0:
-            #     # this checks if the organism is strong enough to collect from this tile
-            #     if self.strength >= tileStats.getFood:
-            #         # finds the amount of food collected as a product of intelligence and tiles complexity
-            #         yield_ammount = self.foodYield(tileStats.food, self.intelligence, tileStats.difficulty, 2)
-                # END IF
+            if tileStats.food != 0:
+                # this checks if the organism is strong enough to collect from this tile
+                if self.strength >= tileStats.getFood:
+                    # finds the amount of food collected as a product of intelligence and tiles complexity
+                    yield_ammount = self.foodYield(tileStats.food, self.intelligence, tileStats.difficulty, 2)
+                    self.food+= yield_ammount
+            #     END IF
             # END IF
 
             choice = random.randint(0, 1)
@@ -109,7 +111,10 @@ class Organism:
 
     # calculates - on a logarithmic scale - the amount of food yielded on the current tile
     def foodYield(self, food, intelligence, difficulty, multiplier=2):
-        return food * math.log(intelligence / difficulty, multiplier)
+        if math.log(intelligence / difficulty, multiplier)<0:
+            return 0
+        else:
+            return food * math.log(intelligence / difficulty, multiplier)
 
     # END foodYield
 

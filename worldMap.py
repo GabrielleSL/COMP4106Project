@@ -14,7 +14,7 @@ class Tiles():
         self.sight = random.randint(0, 4)
         self.danger = random.randint(0, 4)
         self.getFood = random.randint(0, 4)
-        self.difficulty = random.randint(0, 4)
+        self.difficulty = random.randint(1, 4)
         self.stringRep = ' '
 
 

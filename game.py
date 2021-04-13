@@ -35,3 +35,8 @@ def day():
 
 
 day()
+day()
+day()
+day()
+day()
+day()

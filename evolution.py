@@ -18,13 +18,13 @@ class Evolution:
         self.world = World(width, height)
 
     def fitness(self, organ):
-        sum_of_attributes = organ.endurance + organ.strength + organ.perception + organ.agility + organ.intelligence
+        sum_of_attributes = (organ.endurance + organ.strength + organ.perception + organ.agility + organ.intelligence)*organ.food
         return sum_of_attributes
 
     def intialize_population(self):
         for i in range(self.width):
             organ = Organism(random.randint(0, 4), random.randint(0, 4), random.randint(0, 4), random.randint(0, 4),
-                             random.randint(0, 4))
+                             random.randint(1, 4))
             locx = random.randint(0, self.width - 1)
             locy = random.randint(0, self.height - 1)
             self.world.set(locx, locy, 1, organ)
@@ -64,23 +64,57 @@ class Evolution:
                 organ.agility = random.randint(0, 4)
             elif choice == 4:
                 organ.intelligence = random.randint(0, 4)
+        
+        return organ
 
     def genetics(self, population):
         sortedp = self.sort_population_fitness(population)
         newp = []
+        
+
         print(len(sortedp))
+
         for i in range(len(sortedp) - 1):
             choice = random.randint(0, 1)
             if choice == 0:
                 combine = Organism(sortedp[i][0].endurance, sortedp[i][0].strength,
                                    sortedp[i][0].perception, sortedp[i+1][0].agility,
                                    sortedp[i+1][0].intelligence)
-                # print(combine)
-                newp.append(self.mutations(combine))
+                
+                newp.append([self.mutations(combine), ''])
             else:
                 combine = Organism(sortedp[i+1][0].endurance, sortedp[i+1][0].strength,
                                    sortedp[i+1][0].perception, sortedp[i][0].agility,
                                    sortedp[i][0].intelligence)
-                newp.append(self.mutations(combine))
-        print(newp)
+                newp.append([self.mutations(combine), ' '])
+            
+            newp.append([sortedp[i][0], ''])
+
+        
+
+        return self.natural_selection(newp)
+
+    
+    def natural_selection(self,population):
+        sorted_population = self.sort_population_fitness(population)
+        l = int(len(sorted_population)/2)
+        tempp = sorted_population[l:]
+        newp = []
+        for i in range(l):
+            if tempp[i][1] == 0:
+                continue
+            else:
+                newp.append(tempp[i][0])
+        
+        print(len(newp))
+        
         return newp
+
+
+
+
+
+
+
+
+
