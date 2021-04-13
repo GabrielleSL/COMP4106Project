@@ -33,10 +33,23 @@ class Evolution():
 
 
   
-    def genetics():
+    def genetics(self, population):
+
         return None
 
-    def mutations():
-        return None
+    def mutations(self, organ):
+        choice= random.randint(0,4)
+        if choice==0:
+            organ.endurance=random.randint(0,4)
+        elif choice == 1:
+            organ.strength=random.randint(0,4)
+        elif choice == 2:
+            organ.perception=random.randint(0,4)
+        elif choice == 3:
+            organ.agility=random.randint(0,4)
+        elif choice == 4:
+            organ.intelligence=random.randint(0,4)
+
+    
 
 
