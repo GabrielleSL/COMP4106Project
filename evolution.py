@@ -61,6 +61,8 @@ class Evolution():
             organ.agility = random.randint(0, 4)
         elif choice == 4:
             organ.intelligence = random.randint(0, 4)
+            
+        return organ
 
     def genetics(self, population):
         sortedp = self.sort_population_fitness(population)
@@ -72,12 +74,12 @@ class Evolution():
                 combine = Organism(sortedp[i][0].endurance, sortedp[i][0].strength,
                                    sortedp[i][0].perception, sortedp[i+1][0].agility,
                                    sortedp[i+1][0].intelligence)
-                print(combine)
+                # print(combine)
                 newp.append(self.mutations(combine))
             else:
                 combine = Organism(sortedp[i+1][0].endurance, sortedp[i+1][0].strength,
                                    sortedp[i+1][0].perception, sortedp[i][0].agility,
                                    sortedp[i][0].intelligence)
                 newp.append(self.mutations(combine))
-
+        print(newp)
         return newp
