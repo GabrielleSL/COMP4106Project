@@ -1,6 +1,7 @@
 import math
 import random
 from datetime import datetime
+
 random.seed(datetime.now())
 
 """
@@ -22,6 +23,8 @@ Description:
         Also, if an organism has leftover movement after crossing a tile, it can use excess inertia to cross more tiles
     Also note that the status of the organism represents if it is currently active (True), dead (False), or at rest (None)
 """
+
+
 class Organism:
     def __init__(self, endurance, strength, perception, agility, intelligence):
         self.endurance = endurance
@@ -31,6 +34,7 @@ class Organism:
         self.intelligence = intelligence
         self.inertia = 0  # this is the amount of movement built up over time
         self.status = True  # flags the organism as alive
+
     # END __init__
 
     """
@@ -50,6 +54,7 @@ class Organism:
     Description:
         Used to determine if an organism successfully crosses a tile alive and how much food it gets by doing so
     """
+
     def turn(self, tileStats, locx, locy):
         # this is the amount of food yielded from the tile this turn
         yield_ammount = 0
@@ -83,32 +88,34 @@ class Organism:
                     yield_ammount = self.foodYield(tileStats.Food, self.intelligence, tileStats.difficulty, 2)
                 # END IF
             # END IF
-        
-            choice = random.randint(0,1)
-            if choice==1:
-                if random.randint(0,1)==0:
-                    return locx+1, locy+1 
-                else:
-                    return locx-1, locy+1     
-            else:
-                if random.randint(0,1)==0:
-                    return locx-1, locy-1 
-                else:
-                    return locx+1, locy-1 
 
-        # END IF
+            choice = random.randint(0, 1)
+            if choice == 1:
+                if random.randint(0, 1) == 0:
+                    return locx + 1, locy + 1
+                else:
+                    return locx - 1, locy + 1
+            else:
+                if random.randint(0, 1) == 0:
+                    return locx - 1, locy - 1
+                else:
+                    return locx + 1, locy - 1
+
+                    # END IF
+
     # END turn
 
     # calculates - on a logarithmic scale - the amount of food yielded on the current tile
     def foodYield(self, food, intelligence, difficulty, multiplier=2):
         return food * math.log(intelligence / difficulty, multiplier)
+
     # END foodYield
 
     # calculates - on an exponential scale - the chance that the organism has died
     def chanceOfDeath(self, agility, danger):
         return math.exp(agility - danger)
-    # END chanceOfDeath
 
+    # END chanceOfDeath
 
     # can the organism see pTile from where it is currently, currTile
     def _perception(self, pTile):
