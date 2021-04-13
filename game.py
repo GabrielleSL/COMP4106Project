@@ -21,13 +21,15 @@ def day():
             elif org[0].status== False:
                 country.world.set(locx, locy, 1, ' ')
                 continue
-
-            country.world.set(newloc[0], newloc[1], 1, org[0])
             temp_pop.append([org[0],newloc[0],locy[1]])
             country.world.set(locx, locy, 1, ' ')
-    country.population = temp_pop
-
     
+    country.population = temp_pop
+    
+
+
+
+
             
 
         
