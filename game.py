@@ -10,9 +10,11 @@ def day():
     temp_pop = []
     for _ in range(12):
         temp_pop = []
+        # for every organism in the country
         for org in country.population:
 
             organism, loc_x, loc_y = org
+            # organism has a turn: eats food, moves, dies, etc.
             new_x, new_y = org[0].turn(country.world.get_tile(loc_x, loc_y)[0], loc_x, loc_y)
 
             if new_x is None and new_y is None:
@@ -53,9 +55,8 @@ def averages(plot=True, output=True):
     labels = ["endurance_avg", "strength_avg", "agility_avg", "intelligence_avg", "age_avg"]
 
     if output:
-
-        for i in range(5):
-            print(f"{labels[i]} --> {df[i]}")
+        for j in range(5):
+            print(f"{labels[j]} --> {df[j]}")
 
     if plot:
         # Graph it
@@ -76,10 +77,10 @@ def averages(plot=True, output=True):
         plt.show()
 
 
-for _ in range(100):
+for i in range(100):
     day()
-    if country.population == 0:
-        print("Population reached 0. Organism was wiped out.")
+    if len(country.population) == 0:
+        print(f"Population reached 0 at day {i}. Organism was wiped out.")
         break
 
 averages(output=False)

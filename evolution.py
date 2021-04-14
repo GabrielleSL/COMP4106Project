@@ -37,10 +37,9 @@ class Evolution:
         return newp
 
     def genetic_algorithm(self, population):
-        # print(population)
         # fitness function
         sorted_pop_fitness = self.population_fitness(population)
-        # print(sorted_pop_fitness)
+
         # genetic_operator
         pop_size = len(sorted_pop_fitness)
         r_sample = random.sample(range(0, pop_size), int(pop_size / 2))
