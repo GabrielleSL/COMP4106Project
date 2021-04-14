@@ -1,9 +1,4 @@
 from evolution import Evolution
-import random
-import os
-from datetime import datetime
-
-random.seed(datetime.now())
 
 country = Evolution(100, 100)
 country.intialize_population()
@@ -14,24 +9,23 @@ def day():
     for i in range(12):
         temp_pop = []
         for org in country.population:
-            locx = org[1]
-            locy = org[2]
-            newloc = org[0].turn(country.world.get(locx, locy)[0], locx, locy)
 
-            if newloc[0] is None and newloc[1] is None:
-                continue
-            elif not org[0].status:
-                country.world.set(locx, locy, 1, ' ')
-                continue
-            temp_pop.append([org[0], newloc[0], newloc[1]])
-            country.world.set(locx, locy, 1, ' ')
+            organism, loc_x, loc_y = org
+            new_x, new_y = org[0].turn(country.world.get(loc_x, loc_y)[0], loc_x, loc_y)
 
-    # print(temp_pop)
-    # print(" ")
-    # print(country.genetics(temp_pop))
-    new_population = country.populate(country.genetics(temp_pop))
+            if new_x is None and new_y is None:
+                continue
+            elif not organism.alive:
+                country.world.set(loc_x, loc_y, 1, ' ')
+                continue
+            temp_pop.append([org[0], new_x, new_y])
+            country.world.set(loc_x, loc_y, 1, ' ')
+
+    genetic_population = country.genetic_algorithm(temp_pop)
+    new_population = country.populate(genetic_population)
     country.population = new_population
-    #print(new_population)
+    print(len(new_population))
+
 
 
 day()

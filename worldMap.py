@@ -7,7 +7,7 @@ from datetime import datetime
 random.seed(datetime.now())
 
 
-class Tiles():
+class Tiles:
     def __init__(self):
         self.cross = random.randint(0, 4)
         self.food = random.randint(0, 4)
@@ -18,7 +18,7 @@ class Tiles():
         self.stringRep = ' '
 
 
-class World():
+class World:
     def __init__(self, width, height):
         self.width = width
         self.height = height
@@ -67,11 +67,10 @@ def write_world(world, world_map):
 
 # END write_explored_list
 
-def main(world_map):
-    world = World(10, 10)
-    write_world(world, world_map)
+# if __name__ == '__main__':
+#     world_map = "test/world_map.txt"
+#     world = World(10, 10)
+#     write_world(world, world_map)
 
 
-world_map = "test/world_map.txt"
 
-main(world_map)

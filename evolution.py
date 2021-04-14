@@ -18,7 +18,7 @@ class Evolution:
         self.world = World(width, height)
 
     def fitness(self, organ):
-        sum_of_attributes = (organ.endurance + organ.strength + organ.perception + organ.agility + organ.intelligence)*organ.food
+        sum_of_attributes = organ.age * organ.food
         return sum_of_attributes
 
     def intialize_population(self):
@@ -40,7 +40,58 @@ class Evolution:
 
         return newp
 
-    def sort_population_fitness(self, population):
+    def genetic_algorithm(self, population):
+        # fitness function
+        sorted_pop_fitness = self.population_fitness(population)
+        # genetic_operator
+        pop_size = len(sorted_pop_fitness)
+        r_sample = random.sample(range(0, pop_size), int(pop_size/2))
+        new_orgs = []
+        for i in range(0, len(r_sample), 2):
+            new_org = self.genetic_operator(sorted_pop_fitness[i][0], sorted_pop_fitness[i+1][0])
+            # mutate
+            self.mutate(new_org)
+            new_orgs.append(new_org)
+
+        # remove members with a fitness of 0
+        remaining_pop = list(filter(lambda x: x[1] != 0, sorted_pop_fitness))
+
+        new_pop = []
+        for org in remaining_pop:
+            org[0].age += 1
+            new_pop.append(org[0])
+
+        for org in new_orgs:
+            new_pop.append(org)
+
+        return new_pop
+
+
+    def genetic_operator(self, x, y):
+        temp = [x, y]
+        new_org = Organism(temp[random.randint(0, 1)].endurance, temp[random.randint(0, 1)].strength,
+                           temp[random.randint(0, 1)].perception, temp[random.randint(0, 1)].agility,
+                           temp[random.randint(0, 1)].intelligence)
+        return new_org
+
+    def mutate(self, org):
+        chance_of_mutation = random.randint(0, 100)
+        # 5% chance of mutation
+        if chance_of_mutation <= 5:
+            choice = random.randint(0, 4)
+            if choice == 0:
+                org.endurance += random.randint(1, 5)
+            elif choice == 1:
+                org.strength += random.randint(1, 5)
+            elif choice == 2:
+                org.perception += random.randint(1, 5)
+            elif choice == 3:
+                org.agility += random.randint(1, 5)
+            elif choice == 4:
+                org.intelligence += random.randint(1, 5)
+
+
+    def population_fitness(self, population):
         temp = []
         for org in population:
             # ???
@@ -68,11 +119,11 @@ class Evolution:
         return organ
 
     def genetics(self, population):
-        sortedp = self.sort_population_fitness(population)
+        sortedp = self.population_fitness(population)
         newp = []
         
 
-        print(len(sortedp))
+        # print(len(sortedp))
 
         for i in range(len(sortedp) - 1):
             choice = random.randint(0, 1)
@@ -97,6 +148,7 @@ class Evolution:
     
     def natural_selection(self,population):
         sorted_population = self.sort_population_fitness(population)
+        print(sorted_population)
         l = int(len(sorted_population)/2)
         tempp = sorted_population[l:]
         newp = []
@@ -106,7 +158,7 @@ class Evolution:
             else:
                 newp.append(tempp[i][0])
         
-        print(len(newp))
+        # print(len(newp))
         
         return newp
 

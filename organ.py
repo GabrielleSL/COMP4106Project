@@ -33,8 +33,9 @@ class Organism:
         self.agility = agility
         self.intelligence = intelligence
         self.food = 0
+        self.age = 1
         self.inertia = 0  # this is the amount of movement built up over time
-        self.status = True  # flags the organism as alive
+        self.alive = True  # flags the organism as alive
 
     # END __init__
 
@@ -77,7 +78,7 @@ class Organism:
         # checks our chance of death this turn
         death = self.chanceOfDeath(self.agility, tileStats.danger)
         if death > random.uniform(0, 100):
-            self.status = False  # flags the organism is now dead
+            self.alive = False  # flags the organism is now dead
             # report no food was collected this turn 
         else:
             death = False
@@ -87,7 +88,7 @@ class Organism:
                 if self.strength >= tileStats.getFood:
                     # finds the amount of food collected as a product of intelligence and tiles complexity
                     yield_ammount = self.foodYield(tileStats.food, self.intelligence, tileStats.difficulty, 2)
-                    self.food+= yield_ammount
+                    self.food += yield_ammount
             #     END IF
             # END IF
 
@@ -105,7 +106,6 @@ class Organism:
             
         return [None, None]
 
-                    # END IF
 
     # END turn
 
@@ -120,7 +120,7 @@ class Organism:
 
     # calculates - on an exponential scale - the chance that the organism has died
     def chanceOfDeath(self, agility, danger):
-        return math.exp(agility - danger)
+        return math.exp(self.age * (agility - danger))
 
     # END chanceOfDeath
 
