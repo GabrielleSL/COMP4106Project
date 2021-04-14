@@ -11,7 +11,6 @@ Input:
     self - this is the current organism in question
     endurance - this is the amount of space an organism can cross per turn
     strength - this determines if an organism can unlock a food tile
-    perception - this determines what tiles an organism can see
     agility - this determines an organisms defences
     intelligence - this multiplies the food collected per tile
 Output:
@@ -26,10 +25,9 @@ Description:
 
 
 class Organism:
-    def __init__(self, endurance, strength, perception, agility, intelligence):
+    def __init__(self, endurance, strength, agility, intelligence):
         self.endurance = endurance
         self.strength = strength
-        self.perception = perception
         self.agility = agility
         self.intelligence = intelligence
         self.food = 0
@@ -58,17 +56,11 @@ class Organism:
     """
 
     def turn(self, tileStats, locx, locy):
-        # this is the amount of food yielded from the tile this turn
-        yield_ammount = 0
-        # this determines if an organism can enter the tile
-        entry = False
-
         # checks if we can enter the tile this turn
         if self.endurance + self.inertia >= tileStats.cross:
             # add any extra movement for the organism
             self.inertia += self.endurance - self.inertia
             # report that the organism has entered the tile
-            entry = True
         else:  # otherwise we build inertia
             self.inertia += tileStats.cross
             # report nothing has changed this turn
@@ -79,14 +71,12 @@ class Organism:
         death = self.chanceOfDeath(self.agility, tileStats.danger)
         if death > random.uniform(0, 100):
             self.alive = False  # flags the organism is now dead
-            print("dead")
-            # report no food was collected this turn 
+            # report no food was collected this turn
         else:
-            death = False
             # this means that the tile has food on it
             if tileStats.food != 0:
                 # this checks if the organism is strong enough to collect from this tile
-                if self.strength >= tileStats.getFood:
+                if self.strength >= tileStats.food_diff:
                     # finds the amount of food collected as a product of intelligence and tiles complexity
                     yield_ammount = self.foodYield(tileStats.food, self.intelligence, tileStats.difficulty, 2)
                     self.food += yield_ammount
@@ -104,9 +94,8 @@ class Organism:
                     return [locx - 1, locy - 1]
                 else:
                     return [locx + 1, locy - 1]
-            
-        return [None, None]
 
+        return [None, None]
 
     # END turn
 
@@ -124,11 +113,5 @@ class Organism:
         return math.exp(danger - agility)
 
     # END chanceOfDeath
-
-    # can the organism see pTile from where it is currently, currTile
-    def _perception(self, pTile):
-        if pTile[2] - self.perception <= 0:
-            return True
-        return False
 
 # END Organism
