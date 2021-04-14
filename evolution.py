@@ -17,14 +17,14 @@ class Evolution:
         self.population = []
         self.world = World(width, height)
 
-    def fitness(self, organ):
-        sum_of_attributes = organ.age * organ.food
-        return sum_of_attributes
+    def fitness(self, organism):
+        return organism.age * organism.food
 
     def intialize_population(self):
         for i in range(self.width):
-            organ = Organism(random.randint(0, 4), random.randint(0, 4), random.randint(0, 4), random.randint(0, 4),
-                             random.randint(1, 4))
+            organ = Organism(random.randint(3, 5), random.randint(3, 5), random.randint(3, 5), random.randint(3, 5),
+                             random.randint(3, 5))
+            # organ = Organism(5, 5, 5, 5, 5)
             locx = random.randint(0, self.width - 1)
             locy = random.randint(0, self.height - 1)
             self.world.set(locx, locy, 1, organ)
@@ -41,8 +41,10 @@ class Evolution:
         return newp
 
     def genetic_algorithm(self, population):
+        # print(population)
         # fitness function
         sorted_pop_fitness = self.population_fitness(population)
+        # print(sorted_pop_fitness)
         # genetic_operator
         pop_size = len(sorted_pop_fitness)
         r_sample = random.sample(range(0, pop_size), int(pop_size/2))
@@ -59,13 +61,13 @@ class Evolution:
         new_pop = []
         for org in remaining_pop:
             org[0].age += 1
+            org[0].food = 0
             new_pop.append(org[0])
 
         for org in new_orgs:
             new_pop.append(org)
 
         return new_pop
-
 
     def genetic_operator(self, x, y):
         temp = [x, y]

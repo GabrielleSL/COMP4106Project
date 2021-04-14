@@ -79,6 +79,7 @@ class Organism:
         death = self.chanceOfDeath(self.agility, tileStats.danger)
         if death > random.uniform(0, 100):
             self.alive = False  # flags the organism is now dead
+            print("dead")
             # report no food was collected this turn 
         else:
             death = False
@@ -111,7 +112,7 @@ class Organism:
 
     # calculates - on a logarithmic scale - the amount of food yielded on the current tile
     def foodYield(self, food, intelligence, difficulty, multiplier=2):
-        if math.log(intelligence / difficulty, multiplier)<0:
+        if math.log(intelligence / difficulty, multiplier) < 0:
             return 0
         else:
             return food * math.log(intelligence / difficulty, multiplier)
@@ -120,7 +121,7 @@ class Organism:
 
     # calculates - on an exponential scale - the chance that the organism has died
     def chanceOfDeath(self, agility, danger):
-        return math.exp(self.age * (agility - danger))
+        return math.exp(danger - agility)
 
     # END chanceOfDeath
 

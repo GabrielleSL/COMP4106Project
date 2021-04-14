@@ -22,15 +22,12 @@ def day():
             country.world.set(loc_x, loc_y, 1, ' ')
 
     genetic_population = country.genetic_algorithm(temp_pop)
+    print(genetic_population)
     new_population = country.populate(genetic_population)
     country.population = new_population
     print(len(new_population))
 
 
 
-day()
-day()
-day()
-day()
-day()
-day()
+for i in range(100):
+    day()
