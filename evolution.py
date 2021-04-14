@@ -3,9 +3,6 @@ from organ import Organism
 
 import numpy as np
 import random
-from datetime import datetime
-
-random.seed(datetime.now())
 
 
 class Evolution:
@@ -46,10 +43,10 @@ class Evolution:
         # print(sorted_pop_fitness)
         # genetic_operator
         pop_size = len(sorted_pop_fitness)
-        r_sample = random.sample(range(0, pop_size), int(pop_size/2))
+        r_sample = random.sample(range(0, pop_size), int(pop_size / 2))
         new_orgs = []
         for i in range(0, len(r_sample), 2):
-            new_org = self.genetic_operator(sorted_pop_fitness[i][0], sorted_pop_fitness[i+1][0])
+            new_org = self.genetic_operator(sorted_pop_fitness[i][0], sorted_pop_fitness[i + 1][0])
             # mutate
             self.mutate(new_org)
             new_orgs.append(new_org)
@@ -70,14 +67,15 @@ class Evolution:
 
     def genetic_operator(self, x, y):
         temp = [x, y]
-        new_org = Organism(temp[random.randint(0, 1)].endurance, temp[random.randint(0, 1)].strength, temp[random.randint(0, 1)].agility,
+        new_org = Organism(temp[random.randint(0, 1)].endurance, temp[random.randint(0, 1)].strength,
+                           temp[random.randint(0, 1)].agility,
                            temp[random.randint(0, 1)].intelligence)
         return new_org
 
     def mutate(self, org):
         chance_of_mutation = random.randint(0, 100)
-        # 5% chance of mutation
-        if chance_of_mutation <= 5:
+        # 10% chance of mutation
+        if chance_of_mutation <= 10:
             choice = random.randint(0, 3)
             if choice == 0:
                 org.endurance += random.randint(1, 5)
@@ -88,11 +86,13 @@ class Evolution:
             elif choice == 3:
                 org.intelligence += random.randint(1, 5)
 
-
     def population_fitness(self, population):
-        temp = []
-        for org in population:
-            temp.append([org[0], self.fitness(org[0])])
-        temp2 = np.array(temp)
+        if len(population) > 0:
+            temp = []
+            for org in population:
+                temp.append([org[0], self.fitness(org[0])])
+            temp2 = np.array(temp)
 
-        return temp2[temp2[:, 1].argsort()]
+            return temp2[temp2[:, 1].argsort()]
+        else:
+            return []

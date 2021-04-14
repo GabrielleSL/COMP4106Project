@@ -1,8 +1,5 @@
 import math
 import random
-from datetime import datetime
-
-random.seed(datetime.now())
 
 """
 Name:
@@ -110,7 +107,7 @@ class Organism:
 
     # calculates - on an exponential scale - the chance that the organism has died
     def chanceOfDeath(self, agility, danger):
-        return math.exp(danger - agility)
+        return math.exp(self.age * (danger - agility))
 
     # END chanceOfDeath
 

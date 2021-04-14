@@ -1,4 +1,6 @@
 from evolution import Evolution
+import matplotlib.pyplot as plt
+import numpy as np
 
 country = Evolution(100, 100)
 country.intialize_population()
@@ -24,8 +26,60 @@ def day():
     genetic_population = country.genetic_algorithm(temp_pop)
     new_population = country.populate(genetic_population)
     country.population = new_population
-    print(len(new_population))
 
 
-for i in range(100):
+def averages(plot=True, output=True):
+    population = country.population
+    endurance = []
+    strength = []
+    agility = []
+    intelligence = []
+    age = []
+
+    for org in population:
+        endurance.append(org[0].endurance)
+        strength.append(org[0].strength)
+        agility.append(org[0].agility)
+        intelligence.append(org[0].intelligence)
+        age.append(org[0].age)
+
+    endurance_avg = sum(endurance) / len(endurance)
+    strength_avg = sum(strength) / len(strength)
+    agility_avg = sum(agility) / len(agility)
+    intelligence_avg = sum(intelligence) / len(intelligence)
+    age_avg = sum(age) / len(age)
+
+    df = [endurance_avg, strength_avg, agility_avg, intelligence_avg, age_avg]
+    labels = ["endurance_avg", "strength_avg", "agility_avg", "intelligence_avg", "age_avg"]
+
+    if output:
+
+        for i in range(5):
+            print(f"{labels[i]} --> {df[i]}")
+
+    if plot:
+        # Graph it
+        theta = np.linspace(0.0, 2 * np.pi, 5, endpoint=False)
+        colors = ['red', 'blue', 'black', 'orange', 'pink']
+
+        ax = plt.subplot(111, projection='polar')
+        for i in range(5):
+            ax.bar([theta[i]], [df[i]], width=1.1, bottom=0.0, color=colors[i], label=labels[i])
+        ax.bar([0], 1, width=2 * np.pi, bottom=0.0, color='green', label=f'population = {len(population)}')
+
+        plt.tick_params(left=False,
+                        bottom=False,
+                        labelbottom=False)
+
+        ax.legend(loc=4)
+
+        plt.show()
+
+
+for _ in range(100):
     day()
+    if country.population == 0:
+        print("Population reached 0. Organism was wiped out.")
+        break
+
+averages(output=False)

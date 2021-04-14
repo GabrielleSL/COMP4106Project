@@ -1,16 +1,13 @@
 # list of imported libraries
 import random
-from datetime import datetime
-
-random.seed(datetime.now())
 
 
 class Tiles:
     def __init__(self):
         self.cross = random.randint(0, 4)
         self.food = random.randint(0, 4)
-        self.danger = random.randint(0, 4)
-        self.food_diff = random.randint(0, 4)
+        self.danger = random.randint(1, 4)
+        self.food_diff = random.randint(1, 4)
         self.difficulty = random.randint(1, 4)
         self.stringRep = ' '
 
