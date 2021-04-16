@@ -14,6 +14,8 @@ class Tiles:
         self.food_diff = random.randint(1, 4)
         # difficulty level of the tile
         self.difficulty = random.randint(1, 4)
+    # END __init__
+# END Tiles
 
 
 class World:
@@ -22,9 +24,13 @@ class World:
         self.height = height
         # 2D map of the world: [Tile, Organism]
         self.data = [[[Tiles(), None] for y in range(height)] for x in range(width)]
+    # END __init_
 
     def set_organism(self, x, y, value):
         self.data[y][x][1] = value
+    # END set_organism
 
     def get_tile(self, x, y):
         return self.data[y][x]
+    # END get_tile
+# END World
