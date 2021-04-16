@@ -130,6 +130,7 @@ def day_plot(populations):
     plt.show()
 
 days_population = []
+days_population.append(country.population)
 for i in range(100):
     pop = day()
     days_population.append(pop)
