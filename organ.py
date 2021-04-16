@@ -5,7 +5,6 @@ import random
 Name:
     Organism
 Input:
-    self - this is the current organism in question
     endurance - this is the amount of space an organism can cross per turn
     strength - this determines if an organism can unlock a food tile
     agility - this determines an organisms defences
@@ -17,41 +16,31 @@ Description:
     Note that the organisms inertia represents built up momentum from a previous or current turn
         Essentially, if an organism attempts to cross a difficult tile, it can build movement across turns to do so
         Also, if an organism has leftover movement after crossing a tile, it can use excess inertia to cross more tiles
-    Also note that the status of the organism represents if it is currently active (True), dead (False), or at rest (None)
 """
-
-
 class Organism:
     def __init__(self, endurance, strength, agility, intelligence):
         self.endurance = endurance
         self.strength = strength
         self.agility = agility
         self.intelligence = intelligence
-        self.food = 0
-        self.age = 1
+        self.food = 0  # the amount of food gathered in a day
+        self.age = 1  # its age in days
         self.inertia = 0  # this is the amount of movement built up over time
         self.alive = True  # flags the organism as alive
-
     # END __init__
 
     """
     Name:
         turn
     Input:
-        self - refers the organism being referenced
         tileStats - refers to the current tile space the organism is on
-            tileStats[0] - refers to the difficulty to cross the tile
-            tileStats[1] - refers to the difficulty to get food from the tile
-            tileStats[2] - refers to the difficulty to see the tile
-            tileStats[3] - refers to the tiles danger level
-            tileStats[4] - modifies the food yield per tile
-        foodCount - determines the amount of food on the current tile 
+        locx and locy - location of the organism on the map
     Output:
         Determines if the organism crosses the tile and how much food it collects from the tile
+        Returns the new location of the organism if it was able to survive
     Description:
         Used to determine if an organism successfully crosses a tile alive and how much food it gets by doing so
     """
-
     def turn(self, tileStats, locx, locy):
         # checks if we can enter the tile this turn
         if self.endurance + self.inertia >= tileStats.cross:
@@ -93,7 +82,6 @@ class Organism:
                     return [locx + 1, locy - 1]
 
         return [None, None]
-
     # END turn
 
     # calculates - on a logarithmic scale - the amount of food yielded on the current tile
@@ -102,13 +90,11 @@ class Organism:
             return 0
         else:
             return food * math.log(intelligence / difficulty, multiplier)
-
     # END foodYield
 
     # calculates - on an exponential scale - the chance that the organism has died
     def chanceOfDeath(self, agility, danger):
         return math.exp(self.age * (danger - agility))
-
     # END chanceOfDeath
 
 # END Organism

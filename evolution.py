@@ -13,17 +13,23 @@ class Evolution:
         self.population = []
         self.world = World(width, height)
 
+    # fitness function for the genetic algorithm
+    # f(x) = x.age * x.food
     def fitness(self, organism):
         return organism.age * organism.food
 
+    # initialize population with a random value between 3 and 5 for each attribute
     def intialize_population(self):
         for i in range(self.width):
             organ = Organism(random.randint(3, 5), random.randint(3, 5), random.randint(3, 5),
                              random.randint(3, 5))
-            # organ = Organism(5, 5, 5, 5, 5)
+
+            # randomly assign the location of the organism on the map
             locx = random.randint(0, self.width - 1)
             locy = random.randint(0, self.height - 1)
             self.world.set_organism(locx, locy, organ)
+
+            # add organism to the population
             self.population.append([organ, locx, locy])
 
     def populate(self, population):
@@ -64,6 +70,8 @@ class Evolution:
 
         return new_pop
 
+    # egnetic operator of the genetic algorithm
+    # randomly uses the attributes from each parent
     def genetic_operator(self, x, y):
         temp = [x, y]
         new_org = Organism(temp[random.randint(0, 1)].endurance, temp[random.randint(0, 1)].strength,
@@ -71,6 +79,7 @@ class Evolution:
                            temp[random.randint(0, 1)].intelligence)
         return new_org
 
+    # mutates one of the organism's attribute by a random factor of 1 to 5
     def mutate(self, org):
         chance_of_mutation = random.randint(0, 100)
         # 10% chance of mutation
@@ -85,6 +94,7 @@ class Evolution:
             elif choice == 3:
                 org.intelligence += random.randint(1, 5)
 
+    # sort the population by it's fitness
     def population_fitness(self, population):
         if len(population) > 0:
             temp = []

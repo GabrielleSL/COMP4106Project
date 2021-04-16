@@ -4,12 +4,16 @@ import random
 
 class Tiles:
     def __init__(self):
+        # difficulty of crossing tile
         self.cross = random.randint(0, 4)
+        # amount of food on the tile
         self.food = random.randint(0, 4)
+        # danger level of the tile
         self.danger = random.randint(1, 4)
+        # difficulty level of getting the food
         self.food_diff = random.randint(1, 4)
+        # difficulty level of the tile
         self.difficulty = random.randint(1, 4)
-        self.stringRep = ' '
 
 
 class World:
