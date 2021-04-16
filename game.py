@@ -28,6 +28,7 @@ def day():
     genetic_population = country.genetic_algorithm(temp_pop)
     new_population = country.populate(genetic_population)
     country.population = new_population
+    return new_population
 
 
 def averages(plot=True, output=True):
@@ -77,10 +78,64 @@ def averages(plot=True, output=True):
         plt.show()
 
 
+def day_plot(populations):
+    endurance_avg = []
+    strength_avg = []
+    agility_avg = []
+    intelligence_avg = []
+    age_avg = []
+    pop_size = []
+    attribute_size = len(populations)
+
+    for pop in populations:
+        endurance = []
+        strength = []
+        agility = []
+        intelligence = []
+        age = []
+
+        pop_size.append(len(pop))
+
+        if len(pop) == 0:
+            attribute_size = len(populations) - 1
+            break
+
+        for org in pop:
+            endurance.append(org[0].endurance)
+            strength.append(org[0].strength)
+            agility.append(org[0].agility)
+            intelligence.append(org[0].intelligence)
+            age.append(org[0].age)
+
+        endurance_avg.append(sum(endurance) / len(endurance))
+        strength_avg.append(sum(strength) / len(strength))
+        agility_avg.append(sum(agility) / len(agility))
+        intelligence_avg.append(sum(intelligence) / len(intelligence))
+        age_avg.append(sum(age) / len(age))
+
+    t = range(0, attribute_size)
+    plt.subplot(2, 1, 1)
+    plt.plot(t, endurance_avg, label='endurance')
+    plt.plot(t, strength_avg, label='strength')
+    plt.plot(t, agility_avg, label='agility')
+    plt.plot(t, intelligence_avg, label='intelligence')
+    plt.plot(t, age_avg, label='age')
+    plt.legend()
+
+    plt.subplot(2, 1, 2)
+    t = range(0, len(populations))
+    plt.plot(t, pop_size, label='population')
+
+    plt.legend()
+    plt.show()
+
+days_population = []
 for i in range(100):
-    day()
+    pop = day()
+    days_population.append(pop)
     if len(country.population) == 0:
         print(f"Population reached 0 at day {i}. Organism was wiped out.")
         break
 
-averages(output=False)
+# averages(output=False)
+day_plot(days_population)
